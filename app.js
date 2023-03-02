@@ -1,33 +1,19 @@
-
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-const transactionsController = require("./controllers/transactionsController");
-
-
-// DEPENDENCIES
-const express = require("express");
-let transactionsArray = require("./controllers/transactionsController");
-var cors = require('cors')
-
-// CONFIGURATION
+const express = require('express');
+const transactionsController = require('./Controllers/transactions.controller')
+const cors = require('cors');
 const app = express();
 
-// MIDDLEWARE
-app.use(cors())
-app.use(express.json()); // Parse JSON
-app.use("/transactions", transactionsArray);
-
-// ROUTES
-app.get("/", (req, res) => {
-    res.send("welcome to my Budget app");
-  });
-
-  app.get("/transactions", )
-  // 404 PAGE
-  app.get("*", (req, res) => {
-      res.json({ error: "Page not found" });
-    });
-  
-  // EXPORT
-  module.exports = app;
+app.use(cors());
+app.use(express.json());
+app.get('/', (req, res) => {
+  res.send('<h1>Budget-App !</h1>')
+})
+app.use((req, res, next) => {
+  console.log('REQUEST MADE', req.method, req.url)
+  next()
+})
+app.use('/transaction', transactionsController)
+app.use('*', (req, res) => {
+  res.status(404).send('Oops! Nothing to see here.')
+})
+module.exports = app
