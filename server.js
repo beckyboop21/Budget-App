@@ -1,11 +1,11 @@
-const app = require("./app.js");
+const app = require('./app')
+require('dotenv').config()
 
 
-require("dotenv").config();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT
 
+app.listen(PORT, ()=>{
+    console.log(`Listening on ${PORT}`)
+})
 
-// Listen
-app.listen(PORT, () => {
-  console.log(`port ${PORT}  running!`);
-});
+module.exports = app;
