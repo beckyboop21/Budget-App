@@ -1,11 +1,28 @@
-const app = require('./app')
-require('dotenv').config()
+
+require("dotenv").config();
+
+const PORT = process.env.PORT || 8000;
+
+const express = require("express");
+const server = express();
+const morgan = require("morgan");
+const cors = require("cors");
+const transactionsController = require('./controllers/transactionsController')
+
+server.use(express.json()); 
+server.use(cors())
+server.use(morgan("tiny"));
+server.use("/transactions", transactionsController);
 
 
-const PORT = process.env.PORT
+server.get("/", (req, res) => {
+    res.json("Welcome to Budgets backend App, use '/transactions' endpoint for more");
+});
 
-app.listen(PORT, ()=>{
-    console.log(`Listening on ${PORT}`)
-})
+server.get("*", (req, res) => {
+    res.status(404).json({ error: "Page not found" });
+  });
 
-module.exports = app;
+server.listen(PORT, () => {
+    console.log(`Running on port: ${PORT}`)
+  })
